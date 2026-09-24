@@ -11,7 +11,8 @@
  *
  * Production hardening:
  *   - 1 MB body cap; bodies streamed with hard cutoff
- *   - per-token+IP rate limit: 120 req/min (429 cwi.rate_limited)
+ *   - per-IP rate limit: 120 req/min (429 cwi.rate_limited) — keyed by client
+ *     IP, the strictest posture against scraping floods
  *   - per-request HTTP timeout (default 30s) so slow upstreams can't
  *     accumulate connections; stale sockets destroyed
  *   - no stack traces, no secrets, no internal paths in any response
@@ -39,7 +40,7 @@ if (!TOKEN) {
   process.exit(1);
 }
 
-// --- rate limiter: RATE_PER_MIN per 60s window, keyed token+IP --------------
+// --- rate limiter: RATE_PER_MIN per 60s window, keyed by client IP ------------
 const hits = new Map(); // key -> [timestamps]
 function rateLimited(key) {
   const now = Date.now();
@@ -119,6 +120,7 @@ const INFO_HTML = `<!doctype html><html><head><meta charset="utf-8"><title>${SER
 </ul>
 <p>For Meta Muse: register this page's <code>/mcp</code> URL as a custom connector, with the Bearer token from CWI.</p>
 <p>Auth note: every <code>/mcp</code> call requires <code>Authorization: Bearer &lt;token&gt;</code>. No token, no tools.</p>
+<p style="font-size:12px;color:#555">© 2026 Cumulative Web Inc™. All rights reserved.</p>
 </body></html>`;
 
 // --- server -----------------------------------------------------------------
@@ -172,7 +174,7 @@ const server = createServer(async (req, res) => {
     return;
   }
 
-  // ---- rate limit (token + IP) ----
+  // ---- rate limit (client IP) ----
   const rlKey = `${ip}`;
   if (rateLimited(rlKey)) {
     res.writeHead(429, { 'Content-Type': 'application/json', 'Retry-After': '60', ...secHeaders() });
@@ -244,7 +246,8 @@ ${toolRows}
 </table>
 <h2>Threat model</h2>
 <p>See <code>THREAT-MODEL.md</code> in the project for the per-tool threat analysis. Summary: every tool is an abuse/prompt-injection vector; mitigations are token auth, read-only scope, strict validation, timeouts, rate limits, no secret or stack leakage, and vendored-example-only verification for needledrop (no arbitrary file paths).</p>
-<p><a href="/">home</a> · <a href="/health">health</a> · CWI public catalog data — Cumulative Web Inc</p>
+<p><a href="/">home</a> · <a href="/health">health</a> · CWI public catalog data — Cumulative Web Inc™</p>
+<p style="font-size:12px;color:#555">© 2026 Cumulative Web Inc. All rights reserved. Cumulative Web Inc™, CWI™, CWI Connector™, Cover Pieces™, Crown Climb™, Word Signal™ are trademarks of Cumulative Web Inc.</p>
 </body></html>`;
 
 server.listen(PORT, BIND, () => {

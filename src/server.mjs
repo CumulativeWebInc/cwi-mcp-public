@@ -489,15 +489,31 @@ const SCOPES = {
 };
 
 /**
- * Run one tool call with input validation + execution timeout.
+ * Run one tool call with input validation + sanitization + execution timeout.
+ * Sanitization strips ASCII control characters (U+0000–U+001F, U+007F) from
+ * string arguments before handlers see them: neutralizes log-injection and
+ * terminal-escape tricks without changing the contract for legitimate input.
  * Returns the raw result; throws CwiError on any failure.
  */
+function stripControlChars(s) {
+  return s.replace(/[\u0000-\u001F\u007F]/g, '');
+}
+function sanitizeArgs(args) {
+  const out = {};
+  for (const [k, v] of Object.entries(args)) {
+    if (typeof v === 'string') out[k] = stripControlChars(v);
+    else if (Array.isArray(v)) out[k] = v.map((x) => (typeof x === 'string' ? stripControlChars(x) : x));
+    else out[k] = v;
+  }
+  return out;
+}
 export async function runTool(name, args) {
   const tool = TOOLS.find((t) => t.name === name);
   if (!tool) throw E.invalidParams(`unknown tool "${name}"`, { tool: name });
   validateArgs(name, tool.params, args || {});
+  const clean = sanitizeArgs(args || {});
   return await withTimeout(
-    tool.handler(args || {}),
+    tool.handler(clean),
     HANDLER_TIMEOUT_MS,
     `tool ${name} exceeded ${HANDLER_TIMEOUT_MS}ms`
   );

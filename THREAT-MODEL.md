@@ -78,3 +78,9 @@ client can do, and what mitigates it. Last reviewed: 2026-09-24.
   nominal budget. Acceptable: all tools are cheap reads.
 - Upstream GitHub availability bounds the ledger tools; catalog/game tools
   are fully local and unaffected.
+
+---
+
+© 2026 Cumulative Web Inc. All rights reserved.
+
+Trademarks: Cumulative Web Inc™, CWI™, CWI Connector™, Cover Pieces™, Crown Climb™, Word Signal™ are trademarks of Cumulative Web Inc.

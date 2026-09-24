@@ -1,9 +1,13 @@
-# DEPLOY.md — staging the public MCP server (Black's tap)
+# DEPLOY.md — public MCP server deployment (LIVE 2026-09-24)
 
-Status: code is green (40 unit + 27 integration tests), repo is pushed, deploy
-is **staged, not live** — it needs Black's one tap below. No $0 public-HTTPS
-path exists that needs zero new accounts (Hugging Face Docker Spaces now
-requires PRO — verified 2026-09-24 with a live 402).
+Status: code is green (40 unit + 27 adversarial + 27 integration tests),
+repo is public, deploy is **LIVE** since 2026-09-24 ~10:25 EDT — Render free
+plan, Oregon, Docker; `https://cwi-mcp-public.onrender.com` — `/health` green,
+live-URL E2E pass 9/9 measured green ~10:50 EDT.
+
+> PUSH 2026-09-24: Black gave the rollout tap ("Do it") — the security-hardening
+> changes (control-char sanitization, 27-test adversarial suite, ©/™ notices)
+> were pushed to main and Render auto-redeployed from the same commit.
 
 ## What Black taps (one time, ~5 minutes)
 

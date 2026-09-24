@@ -100,3 +100,9 @@ See `CHANGELOG.md`.
 ## License
 
 MIT — see `LICENSE`.
+
+---
+
+© 2026 Cumulative Web Inc. All rights reserved.
+
+Trademarks: Cumulative Web Inc™, CWI™, CWI Connector™, Cover Pieces™, Crown Climb™, Word Signal™ are trademarks of Cumulative Web Inc.

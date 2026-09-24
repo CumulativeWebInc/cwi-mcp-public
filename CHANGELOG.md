@@ -32,3 +32,9 @@ taxonomy — all addressed here.
 - No mutating tools (no writes anywhere — by design)
 - `needledrop_verify_v1` verifies the vendored example ledger only; arbitrary `file` paths from the v0.x precedent are disabled on the public server (path-traversal hardening)
 - No stdio transport on the public deployment (HTTP only; stdio remains for local use)
+
+---
+
+© 2026 Cumulative Web Inc. All rights reserved.
+
+Trademarks: Cumulative Web Inc™, CWI™, CWI Connector™, Cover Pieces™, Crown Climb™, Word Signal™ are trademarks of Cumulative Web Inc.
