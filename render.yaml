@@ -1,0 +1,16 @@
+# Render Blueprint — one-click deploy of cwi-mcp-public (free plan).
+# Black's tap steps are in DEPLOY.md.
+services:
+  - type: web
+    name: cwi-mcp-public
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    envVars:
+      - key: BIND
+        value: 0.0.0.0
+      - key: MCP_TOKEN
+        sync: false # Black pastes the Bearer token as a secret in the Render dashboard
+      - key: RATE_PER_MIN
+        value: 120
