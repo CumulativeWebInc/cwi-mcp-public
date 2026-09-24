@@ -1,0 +1,31 @@
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: npm test
+      - name: schema-version registry check
+        run: |
+          node -e "
+            const fs=require('fs');
+            const reg=JSON.parse(fs.readFileSync('SCHEMA-VERSIONS.json','utf8'));
+            const files=['data/catalog-index.json','data/game-cover-pieces.json','data/game-crown-climb.json','data/game-word-signal.json'];
+            for(const f of files){
+              const d=JSON.parse(fs.readFileSync(f,'utf8'));
+              const sv=d.schema_version||d.index_version;
+              if(!sv) throw new Error(f+' has no schema/index version');
+              if(reg[f]!==sv) throw new Error(f+' version '+sv+' not registered in SCHEMA-VERSIONS.json');
+            }
+            console.log('schema registry check ok');
+          "
