@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cumulative Web Inc™ on Muse</title>
+<style>
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;max-width:760px;margin:0 auto;padding:24px;line-height:1.6;color:#1a1a1a}
+header{display:flex;align-items:center;gap:16px;border-bottom:1px solid #ddd;padding-bottom:16px;margin-bottom:24px}
+header img{width:64px;height:64px;border-radius:50%}
+nav{margin:16px 0}
+nav a{margin-right:16px;color:#0b5fff}
+footer{margin-top:40px;border-top:1px solid #ddd;padding-top:16px;font-size:13px;color:#555}
+h1{font-size:28px} h2{font-size:20px;margin-top:32px}
+code{background:#f4f4f4;padding:2px 6px;border-radius:4px}
+</style>
+</head>
+<body>
+<header>
+<img src="cwi-logo.jpg" alt="Cumulative Web Inc logo">
+<div>
+<h1 style="margin:0">Cumulative Web Inc™ on Muse</h1>
+<p style="margin:4px 0 0">Music, games, and agent-verification tools from the CWI catalog — inside Muse, by voice.</p>
+</div>
+</header>
+<nav><a href="index.html">Home</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Service</a><a href="acceptable-use.html">Acceptable Use</a></nav>
+
+<h2>What the connector does</h2>
+<p>Connect your Muse agent to Cumulative Web Inc™ public services. Once connected, you can ask Muse, in plain language or by voice, to:</p>
+<ul>
+<li>Search the CWI music catalog — 52 tracks from the CWI catalog including That Boy Hi Hat, with distributor-verified ISRCs where confirmed, plus play and release metadata.</li>
+<li>Look up a track — full record by track ID, or verify an ISRC with an honest conflict signal (disputed or unverified ISRCs are never presented as authoritative).</li>
+<li>Find CWI games — Cover Pieces™, Crown Climb™, and Word Signal™, with direct play links.</li>
+<li>Read the Gear Ledger — public agent registry state, agent and task records.</li>
+<li>Score and verify agent trust — the CWI Verdict Engine (v1.0.0, compute-only scoring) and NEEDLE DROP ledger verification.</li>
+</ul>
+
+<h2>How Muse users use it</h2>
+<ol>
+<li>Open the connector in the Muse directory and choose Connect.</li>
+<li>Enter the connector token issued by Cumulative Web Inc when prompted (stored in Muse's Secure Credentials Store — Muse never sees the raw token).</li>
+<li>Ask Muse things like: "Find That Boy Hi Hat tracks about …", "What's the verified ISRC for Diabolique?", "Open the CWI games."</li>
+</ol>
+
+<p>Everything the connector exposes is read-only: Muse can look things up, but nothing can be changed, bought, licensed, or registered through the connector.</p>
+
+<h2>Data &amp; privacy</h2>
+<p>The connector transmits only the public data you ask for (catalog records, game metadata, ledger entries). It collects no account data and no personal information. Full details in our <a href="privacy.html">Privacy Policy</a>.</p>
+
+<h2>Terms</h2>
+<p>Use of the connector and the underlying service is governed by our <a href="terms.html">Terms of Service</a>.</p>
+
+<h2>Support</h2>
+<p>Questions or problems: <a href="mailto:hp@cumulativeweb.com">hp@cumulativeweb.com</a></p>
+
+<h2>For developers</h2>
+<p>The connector is backed by cwi-mcp-public v1.0.0 — an open, versioned MCP server over streamable HTTP with 12 read-only tools and bearer-token auth. Source, docs, changelog, and threat model: <a href="https://github.com/CumulativeWebInc/cwi-mcp-public">github.com/CumulativeWebInc/cwi-mcp-public</a>.<br>
+MCP endpoint: <code>https://cwi-mcp-public.onrender.com/mcp</code></p>
+
+<footer>
+<p>© 2026 Cumulative Web Inc. All rights reserved. Music catalog and games are CWI intellectual property. Nothing on this page is published without owner approval.<br>
+Trademarks: Cumulative Web Inc™, CWI™, CWI Connector™, Cover Pieces™, Crown Climb™, Word Signal™ are trademarks of Cumulative Web Inc.</p>
+</footer>
+</body>
+</html>

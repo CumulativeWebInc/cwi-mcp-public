@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy — Cumulative Web Inc™ Muse Connector</title>
+<style>
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;max-width:760px;margin:0 auto;padding:24px;line-height:1.6;color:#1a1a1a}
+header{display:flex;align-items:center;gap:16px;border-bottom:1px solid #ddd;padding-bottom:16px;margin-bottom:24px}
+header img{width:64px;height:64px;border-radius:50%}
+nav{margin:16px 0}
+nav a{margin-right:16px;color:#0b5fff}
+footer{margin-top:40px;border-top:1px solid #ddd;padding-top:16px;font-size:13px;color:#555}
+h1{font-size:26px} h2{font-size:18px;margin-top:28px}
+.status{background:#f7f7f7;border-left:4px solid #0b5fff;padding:12px 16px;margin:16px 0}
+</style>
+</head>
+<body>
+<header>
+<img src="cwi-logo.jpg" alt="Cumulative Web Inc logo">
+<div><h1 style="margin:0">Privacy Policy — Cumulative Web Inc™ Muse Connector</h1></div>
+</header>
+<nav><a href="index.html">Home</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Service</a><a href="acceptable-use.html">Acceptable Use</a></nav>
+
+<div class="status">
+<strong>Effective date: September 24, 2026</strong><br>
+Controller: Cumulative Web Inc — support: <a href="mailto:hp@cumulativeweb.com">hp@cumulativeweb.com</a>
+</div>
+
+<h2>1. What this policy covers.</h2>
+<p>How Cumulative Web Inc ("CWI," "we," "us") handles information in connection with the CWI connector for Meta Muse, backed by the <code>cwi-mcp-public</code> MCP server (the "Service"). It does <strong>not</strong> cover Meta's handling of your data inside Muse itself — governed by Meta's terms and privacy policy, reviewed separately.</p>
+
+<h2>2. Information we do NOT collect.</h2>
+<p>No accounts. No personal information: no names, emails, addresses, payment details, or device identifiers. No credentials: your connector token is entered through Muse's own secure credential flow and stored in Muse's Secure Credentials Store. Meta's Sentinel swaps a surrogate for the real token; CWI never sees your Muse account or your other credentials.</p>
+
+<h2>3. Information processed by the Service.</h2>
+<p>Your queries — the tool name and arguments you asked Muse to send (e.g., a search string, a track ID, an ISRC); transient, processed to build the response, not retained. Operational logs — timestamp, route, status code, coarse client network identifier; no query content beyond the tool name; retained max 30 days, then deleted. Aggregate, anonymized usage counts may be kept for capacity planning; not traceable to any individual.</p>
+
+<h2>4. What the connector returns.</h2>
+<p>Only public CWI data you asked for: catalog records (titles, artists, release/play metadata, ISRCs), game names and play links, public gear-ledger entries. ISRCs flagged conflicted or missing are <strong>never presented as authoritative</strong> — the response says so explicitly.</p>
+
+<h2>5. Sharing.</h2>
+<p>We do not sell, rent, or share information with third parties for marketing. Meta receives the query arguments and resulting tool output because Muse is the channel you chose to reach the Service.</p>
+
+<h2>6. Security.</h2>
+<p>All 12 tools read-only — nothing can be changed, purchased, licensed, or registered through the connector. Bearer-token auth on every MCP call; rate limiting (120 requests/minute) with 429 + Retry-After; input validation on every argument. Full threat model: <a href="https://github.com/CumulativeWebInc/cwi-mcp-public">github.com/CumulativeWebInc/cwi-mcp-public</a> (THREAT-MODEL.md).</p>
+
+<h2>7. Children.</h2>
+<p>The Service is not directed at children under 13 and collects no data from them by design.</p>
+
+<h2>8. Changes.</h2>
+<p>Material changes are posted here with a new effective date before taking effect.</p>
+
+<h2>9. Contact.</h2>
+<p>Privacy questions: <strong><a href="mailto:hp@cumulativeweb.com">hp@cumulativeweb.com</a></strong></p>
+
+<footer>
+<p><strong>Trademarks.</strong> Cumulative Web Inc™, CWI™, CWI Connector™, Cover Pieces™, Crown Climb™, Word Signal™ are trademarks of Cumulative Web Inc. © 2026 Cumulative Web Inc. All rights reserved.</p>
+</footer>
+</body>
+</html>
