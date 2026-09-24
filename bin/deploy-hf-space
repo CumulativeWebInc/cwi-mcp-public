@@ -1,0 +1,113 @@
+#!/home/hatch/workspace/skills/huggingface/.venv/bin/python
+"""Deploy cwi-mcp-public to Hugging Face Spaces (Docker SDK) — $0 public HTTPS.
+
+Creates (or reuses) <username>/cwi-mcp-public as a PUBLIC Docker Space, uploads
+the project (src/, data/, vendor/, Dockerfile, package.json, README + space
+card), and sets MCP_TOKEN as a Space secret (never in the payload, never
+printed). The Bearer token is saved locally at ~/.config/cwi-mcp-public/token
+(mode 600) for Black's Muse custom-connector configuration.
+
+Auth: custom.huggingface surrogate via authd; never a raw key.
+"""
+import os
+import secrets
+import stat
+import sys
+
+for key in ("no_proxy", "NO_PROXY"):
+    val = os.environ.get(key)
+    if val:
+        os.environ[key] = ",".join(p.strip() for p in val.split(",") if p.strip() and ":" not in p)
+
+sys.path.insert(0, "/opt/hatch/skills/skill-creator/bin")
+from dynamic_credentials import dynamic_credential_entry  # noqa: E402
+
+CREDENTIAL_NAME = "custom.huggingface"
+PROJECT = os.path.expanduser("~/workspace/cwi-mcp-public")
+SPACE_NAME = "cwi-mcp-public"
+TOKEN_FILE = os.path.expanduser("~/.config/cwi-mcp-public/token")
+
+CARD_FRONTMATTER = """---
+title: CWI MCP Server (Public)
+emoji: 👑
+colorFrom: indigo
+colorTo: purple
+sdk: docker
+app_port: 7860
+pinned: false
+license: mit
+---
+
+"""
+
+def load_or_create_token():
+    if os.path.exists(TOKEN_FILE):
+        with open(TOKEN_FILE) as f:
+            tok = f.read().strip()
+        if tok:
+            print("reusing existing MCP token (stored locally, not printed)")
+            return tok
+    tok = secrets.token_urlsafe(48)
+    os.makedirs(os.path.dirname(TOKEN_FILE), exist_ok=True)
+    fd = os.open(TOKEN_FILE, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+    with os.fdopen(fd, "w") as f:
+        f.write(tok)
+    os.chmod(TOKEN_FILE, 0o600)
+    print("generated new MCP token -> saved to ~/.config/cwi-mcp-public/token (600)")
+    return tok
+
+def main():
+    token = load_or_create_token()
+
+    entry = dynamic_credential_entry(CREDENTIAL_NAME)
+    surrogate = str(entry["surrogate"]).strip()
+    if not surrogate.startswith("hsurr:"):
+        print("unexpected surrogate format from authd", file=sys.stderr)
+        return 1
+    os.environ["HF_TOKEN"] = surrogate
+
+    from huggingface_hub import HfApi  # noqa: E402
+
+    api = HfApi()
+    me = api.whoami()
+    user = me["name"]
+    repo_id = f"{user}/{SPACE_NAME}"
+    print(f"HF user: {user}")
+
+    url = api.create_repo(
+        repo_id=repo_id, repo_type="space", space_sdk="docker",
+        private=False, exist_ok=True,
+    )
+    print(f"Space repo ready: {url}")
+
+    card = CARD_FRONTMATTER + open(os.path.join(PROJECT, "README.md")).read()
+    card_path = "/tmp/cwi-mcp-public-space-README.md"
+    with open(card_path, "w") as f:
+        f.write(card)
+
+    ignore = [".git", "__pycache__", "*.pyc", ".DS_Store", "bin", "tests"]
+    info = api.upload_folder(
+        folder_path=PROJECT, repo_id=repo_id, repo_type="space",
+        ignore_patterns=ignore,
+        commit_message="cwi-mcp-public v1.0.0: production MCP server (token auth, versioned tools, error taxonomy)",
+    )
+    print(f"folder uploaded: {info.oid[:7]}")
+    info2 = api.upload_file(
+        path_or_fileobj=card_path, path_in_repo="README.md",
+        repo_id=repo_id, repo_type="space",
+        commit_message="space card: docker sdk frontmatter",
+    )
+    print(f"space card uploaded: {info2.oid[:7]}")
+
+    api.add_space_secret(repo_id=repo_id, key="MCP_TOKEN", value=token)
+    print("MCP_TOKEN set as Space secret (value never printed)")
+
+    host = f"https://{user}-{SPACE_NAME}.hf.space".replace("_", "-")
+    print(f"LIVE URL: https://huggingface.co/spaces/{repo_id}")
+    print(f"PUBLIC HOST: {host}")
+    print(f"MCP ENDPOINT: {host}/mcp")
+    print("NOTE: Docker Space builds take a few minutes; /health returns 200 when live.")
+    return 0
+
+if __name__ == "__main__":
+    sys.exit(main())
