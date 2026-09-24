@@ -1,0 +1,32 @@
+{
+  "schema_version": "cwi.content-index/1.0",
+  "day": "2026-09-23",
+  "id": "cwi-cover-pieces",
+  "type": "game-launch",
+  "media_files": [
+    "index.html"
+  ],
+  "caption": "Cover Pieces™ — the CWI jigsaw game. Rebuild real That Boy Hi Hat cover art, piece by piece. Play free:",
+  "hashtags": [
+    "#CoverPieces",
+    "#Jigsaw",
+    "#CumulativeWebInc",
+    "#ThatBoyHiHat",
+    "#PostTrapFuturism",
+    "#IndieGame"
+  ],
+  "threads_text": "Cover Pieces™ — the CWI jigsaw game. Rebuild real That Boy Hi Hat cover art, piece by piece. Play free: https://cumulativewebinc.github.io/cwi-cover-pieces/",
+  "post_order": 1,
+  "platform_targets": [
+    "github-pages"
+  ],
+  "game": {
+    "name": "Cover Pieces™",
+    "url": "https://cumulativewebinc.github.io/cwi-cover-pieces/",
+    "self_contained": true,
+    "theme_tracks": [
+      "Zooted Zone",
+      "Doves & Diamonds"
+    ]
+  }
+}
